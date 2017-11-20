@@ -17,6 +17,10 @@ public class PassThroughTransformer implements MessageTransformer<Account, Accou
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    public PassThroughTransformer() {
+        System.out.println(elasticsearchTemplate + "********************************\n\n\n\n");
+    }
+
     @Override
     public Account transform(final Account input) {
         return input;

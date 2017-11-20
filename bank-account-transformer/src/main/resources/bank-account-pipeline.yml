@@ -6,7 +6,7 @@ realtime:
     transformer: "passThroughTransformer"
     index: "bank"
     batchSize: 100
-    pojo: "com.sai.samples.bank.transformer.Account"
+    pojo: "com.sai.samples.bank.model.Account"
     idField: "account_number"
 batch:
     elasticsearch:
@@ -18,4 +18,4 @@ batch:
         toType: "account_new"
         idField: "account_number"
     transformer: "passThroughTransformer"
-    pojo: "com.sai.samples.bank.transformer.Account"
+    pojo: "com.sai.samples.bank.model.Account"

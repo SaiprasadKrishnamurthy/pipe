@@ -1,0 +1,64 @@
+[
+  {
+    "namespace": "pipeline",
+    "pipelineId": "SamplePipeline1",
+    "description": "Does something",
+    "author": "Sai Kris",
+    "realtime": {
+      "transformer": "passThroughTransformer",
+      "pojo": "com.sai.samples.bank.model.Account",
+      "index": "bank",
+      "idField": "account_number",
+      "batchSize": 100,
+      "additionalProperties": {}
+    },
+    "batch": {
+      "elasticsearch": {
+        "fromIndex": "bank",
+        "fromType": "account",
+        "toIndex": "bank_new",
+        "toType": "account_new",
+        "idField": "account_number",
+        "parallelSlices": null,
+        "batchSize": 100,
+        "docValueField": null,
+        "query": "{  \"match_all\": {}  } ",
+        "queryProvider": null,
+        "additionalProperties": {}
+      },
+      "transformer": "passThroughTransformer",
+      "pojo": "com.sai.samples.bank.model.Account",
+      "additionalProperties": {}
+    },
+    "links": [
+      {
+        "rel": "self",
+        "href": "/v1/pipeline/SamplePipeline1"
+      },
+      {
+        "rel": "startJob",
+        "href": "/v1/job/SamplePipeline1/start?force=false"
+      },
+      {
+        "rel": "forceStartJob",
+        "href": "/v1/job/SamplePipeline1/start?force=true"
+      },
+      {
+        "rel": "jobs",
+        "href": "/v1/jobs/SamplePipeline1"
+      },
+      {
+        "rel": "killedJobs",
+        "href": "/v1/job/recent-killed/SamplePipeline1"
+      },
+      {
+        "rel": "runningJobs",
+        "href": "/v1/job/running/SamplePipeline1"
+      },
+      {
+        "rel": "docLoadedStats",
+        "href": "/v1//job/{txnId}/docs-loaded-stats/"
+      }
+    ]
+  }
+]
