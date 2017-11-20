@@ -23,13 +23,16 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.16.12</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.sai.pipe</groupId>
                 <artifactId>pipeline-framework</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
-                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.sai.pipe</groupId>
+                <artifactId>pipe-api</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -42,8 +45,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.5</version>
                     <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
                 <plugin>

@@ -25,6 +25,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sai.pipe</groupId>
+            <artifactId>pipe-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>

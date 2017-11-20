@@ -11,6 +11,7 @@
 
     <modules>
         <module>pipe-parent</module>
+        <module>pipe-api</module>
         <module>pipe-framework</module>
         <module>bank-account-transformer</module>
     </modules>

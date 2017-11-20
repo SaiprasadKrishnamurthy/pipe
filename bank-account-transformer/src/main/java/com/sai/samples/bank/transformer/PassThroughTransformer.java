@@ -1,7 +1,7 @@
-package org.pipes.transformer;
+package com.sai.samples.bank.transformer;
 
+import com.sai.samples.bank.model.Account;
 import org.pipes.api.MessageTransformer;
-import org.pipes.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;

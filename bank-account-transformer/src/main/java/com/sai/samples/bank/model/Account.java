@@ -1,4 +1,4 @@
-package org.pipes.model;
+package com.sai.samples.bank.model;
 
 import lombok.Data;
 import org.springframework.data.elasticsearch.annotations.Document;
