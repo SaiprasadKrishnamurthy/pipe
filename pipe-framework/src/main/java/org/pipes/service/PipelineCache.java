@@ -2,20 +2,23 @@ package org.pipes.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.io.Resources;
-import com.google.common.reflect.ClassPath;
+import org.apache.commons.io.IOUtils;
 import org.pipes.api.PipeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by saipkri on 17/11/17.
@@ -24,27 +27,22 @@ import java.util.stream.Collectors;
 public class PipelineCache {
     private static final Logger LOGGER = LoggerFactory.getLogger(PipelineCache.class);
 
+    @Value("classpath*:*pipeline.yml")
+    private Resource[] configs;
+
     @Cacheable(value = "configs")
     public List<PipeConfig> getPipes() {
-        List<PipeConfig> configs = new ArrayList<>();
-        try {
-            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-            ClassPath classpath = ClassPath.from(Thread.currentThread().getContextClassLoader());
-            classpath.getResources()
-                    .stream()
-                    .filter(resourceInfo -> resourceInfo.getResourceName().endsWith("pipeline.yml"))
-                    .forEach(resource -> {
-                        LOGGER.info("PIPE | Descriptor is: " + resource);
-                        try {
-                            configs.add(mapper.readValue(Resources.asByteSource(Resources.getResource(resource.getResourceName())).openStream(), PipeConfig.class));
-                        } catch (IOException ioe) {
-                            throw new UncheckedIOException(ioe);
-                        }
-                    });
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
-        return configs;
+        LOGGER.info("Config ymls discovered: " + Arrays.deepToString(configs));
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        return Stream.of(configs)
+                .map(resource -> {
+                    LOGGER.info("PIPE | Descriptor is: " + resource);
+                    try {
+                        return mapper.readValue(IOUtils.toString(resource.getInputStream(), Charset.defaultCharset()), PipeConfig.class);
+                    } catch (IOException ioe) {
+                        throw new UncheckedIOException(ioe);
+                    }
+                }).collect(Collectors.toList());
     }
 
     @Cacheable(value = "config")

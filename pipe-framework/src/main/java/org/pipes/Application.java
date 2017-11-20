@@ -44,6 +44,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -153,7 +154,16 @@ public class Application {
 
     @Bean
     Grok grok() throws Exception {
-        return Grok.create("patterns/patterns");
+        Grok g = new Grok();
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("java")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("firewalls")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("haproxy")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("linux-syslog")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("nagios")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("patterns")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("postfix")));
+        g.addPatternFromReader(new InputStreamReader(Application.class.getClassLoader().getResourceAsStream("ruby")));
+        return g;
     }
 
     @Bean
