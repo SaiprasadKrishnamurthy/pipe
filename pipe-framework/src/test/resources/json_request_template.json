@@ -1,0 +1,14 @@
+{
+  "requests": [
+    {
+      "image": {
+        "content": "$img$"
+      },
+      "features": [
+        {
+          "type": "TEXT_DETECTION"
+        }
+      ]
+    }
+  ]
+}

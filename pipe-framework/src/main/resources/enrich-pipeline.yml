@@ -1,0 +1,21 @@
+namespace: "pipeline"
+pipelineId: "SamplePipeline1"
+author: "Sai Kris"
+description: "Does something"
+realtime:
+    transformer: "passThroughTransformer"
+    index: "bank"
+    batchSize: 100
+    pojo: "org.pipes.model.Account"
+    idField: "account_number"
+batch:
+    elasticsearch:
+        fromIndex: "bank"
+        fromType: "account"
+        batchSize: 100
+        query: "{  \"match_all\": {}  } "
+        toIndex: "bank_new"
+        toType: "account_new"
+        idField: "account_number"
+    transformer: "passThroughTransformer"
+    pojo: "org.pipes.model.Account"
