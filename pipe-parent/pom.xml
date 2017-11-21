@@ -125,7 +125,8 @@
                     <version>1.8</version>
                     <executions>
                         <execution>
-                            <phase>integration-test</phase>
+                            <id>debug</id>
+                            <phase>post-integration-test</phase>
                             <goals>
                                 <goal>run</goal>
                             </goals>
@@ -133,8 +134,22 @@
                                 <target if="debug">
                                     <java fork="true" failonerror="yes"
                                           jar="${project.build.directory}/${build.finalName}.jar">
-                                        <jvmarg value="-Xdebug" />
-                                        <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" />
+                                        <jvmarg value="-Xdebug"/>
+                                        <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"/>
+                                    </java>
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>run</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target if="run">
+                                    <java fork="true" failonerror="yes"
+                                          jar="${project.build.directory}/${build.finalName}.jar">
                                     </java>
                                 </target>
                             </configuration>
