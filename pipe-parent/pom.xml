@@ -119,6 +119,28 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                        <execution>
+                            <phase>integration-test</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target if="debug">
+                                    <java fork="true" failonerror="yes"
+                                          jar="${project.build.directory}/${build.finalName}.jar">
+                                        <jvmarg value="-Xdebug" />
+                                        <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" />
+                                    </java>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

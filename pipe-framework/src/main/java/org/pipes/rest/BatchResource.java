@@ -132,6 +132,7 @@ public class BatchResource {
         pipes
                 .forEach(p ->
                 {
+                    p.removeLinks();
                     p.add(new Link("/v1/pipeline/" + p.getPipelineId(), "self"));
                     p.add(new Link("/v1/job/" + p.getPipelineId() + "/start?force=false", "startJob"));
                     p.add(new Link("/v1/job/" + p.getPipelineId() + "/start?force=true", "forceStartJob"));
