@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pipe</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+
+
+<style>
+.section-light
+{
+	     background: none; 
+}
+
+a:hover
+{
+	 text-decoration: none;
+}
+
+a
+{
+	color: #367e9c;
+    text-decoration: none;
+    cursor: pointer;
+    outline: 0;
+	margin-bottom: 2px;
+    display: inline-block;
+    font-family: BentonSans-Book, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+
+
+.list-feature span
+{
+	font-size:100%;
+}
+
+
+.fa-6
+{
+	font-size:17px;
+}
+
+
+.navbar
+{
+	width:100%;
+	color: #FFFFFF;
+    line-height: 4rem;
+    font-size: 1.6rem;
+    background-color: #464646;
+	    
+}
+
+
+.navbar a {
+    color: white !important;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    padding-bottom: 24px !important;
+    padding-top: 20px !important;
+}
+
+img:hover
+{
+	cursor:pointer;
+}
+
+
+.btn-primary {
+   border:none;
+}
+
+.btn-primary:hover {
+   border:none;
+}
+
+.popoverText
+{
+	    color: #6767ea;
+}
+
+
+
+
+
+</style>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed" role="navigation">
+    <div class="container" style="width:100%">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Pipe</a>
+        </div>
+        <div class="collapse navbar-collapse">
+
+        </div><!--/.nav-collapse -->
+
+    </div>
+
+
+</div>
+
+
+<section class="section-light">
+    <div class="page-header">
+        <h1>Available Pipe configs</h1>
+    </div>
+    <div id="contentLoad" class="col-md-11" style="margin-top: 5%;overflow-y:auto;margin-left:5%">
+    </div>
+
+
+    <div class="modal fade" id="modalpopup">
+        <div class="modal-dialog" role="document" style="width:90%;overflow:auto">
+            <div class="modal-content" style="width:90%;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pouptitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="poupimg" style="height:700px;margin-left:7%"></img>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--  core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script>
+$( document ).ready(function() {
+$('[data-toggle="popover"]').popover();   
+   $.get("http://10.126.219.141:8084/v1/pipelines", function(data, status){
+        
+		if(status == "success")
+		{
+			
+			var obj =data;
+			
+			drawContnet(obj);
+			$(".glyphicon").click(function(e){
+			
+			var nodeId = e.target.parentElement.id;
+			var index = $("#"+nodeId).attr('attrindex');
+			
+		if($(".popover").is(':visible'))
+			$('.popverElement').popover('hide');
+			setTimeout(function(){ 
+			
+			
+			$("#"+nodeId).popover('show');
+			
+			var popoverid = $("#"+nodeId).attr('aria-describedby');
+			
+			var index = $($("#"+popoverid)[0].parentElement.parentElement.children[0]).attr("objid");
+			
+			var selectedObj = window.content[index];
+			$("#"+popoverid+" .popover-content")[0].innerHTML='<span class=popoverText> NameSpace      : &nbsp;&nbsp;</span>'+selectedObj["namespace"]+"<br>"+'<span class=popoverText>Description   &nbsp;&nbsp;:</span>&nbsp;&nbsp; '+selectedObj["description"]+"<br>"+'<span class=popoverText>Author   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>&nbsp;&nbsp; '+selectedObj["author"];	
+			$("#"+popoverid)[0].style.width="100%";
+			$("#"+popoverid)[0].style.top="185px";
+			}, 1);
+				
+
+			});
+		}else
+		{
+			alert("rest failed")
+		}
+    });
+	
+	
+	
+	
+});
+
+$(document).click(function (e) {
+if(e.target.className != "glyphicon glyphicon-info-sign")
+setTimeout(function(){ $('.popverElement').popover('hide'); }, 10);
+
+});
+
+
+function drawContnet(obj)
+{
+	$('#modalpopup').modal({ show: false})
+	
+	
+	var content = obj;
+	window.content = content;
+	if(content.length>0)
+	{
+		$("#contentLoad").html("");
+		var row = '<div id = "row0" class="row"></div>';
+		$("#contentLoad").html(row);
+		var rowid = "row0"
+		var thumbmail = "";
+		for(var i=0;i<content.length;i++)
+		{
+			if(i!=0 && i%3 == 0)
+			{
+				row = '<div id = "row"'+i+' class="row"></div>'
+				rowid = "row"+i;
+				$("#contentLoad").html(row);
+			}
+			
+			thumbmail = '<div class="col-md-3" style="padding:20px"><div style="text-align:center;border: 2px solid #e2e0e9;height: 260px;width: 273px">'
+			thumbmail+=	 '<img src="/images/lambda.png" objid='+i
+			+' onclick="showpopup(this)" data-target="#modalpopup" style="box-shadow: 5px 6px 8px #888888;margin-top:23px;height:183px;width:219px;border: 2px solid #e0dada;"></img><br>'
+			thumbmail+=  '<div style="margin-top:10px;margin-top: 10px;font-size: 15px;color: #323359;font-weight: bold;">'+content[i]['pipelineId']+' &nbsp;<a href="#" class="popverElement" data-toggle="popover" id="popover'+i+'" attrindex='+i+' title='+content[i]['pipelineId']+'><span class="glyphicon glyphicon-info-sign"></span></a> </div></div></div>'
+			$("#"+rowid).html($("#"+rowid).html()+thumbmail);
+			
+			
+		}
+	}else
+	{
+		$("#contentLoad").html('<div class="alert alert-info"><strong>Info!</strong> No Data Available</div>')
+	}
+	
+	
+	setInterval(function () {
+        $.get("http://10.126.219.141:8084/v1/pipelines", function(data, status){
+        
+		if(status == "success")
+		{
+				var obj =data;
+				var url = "http://10.126.219.141:8084";
+				var tempurl = "";
+				
+				for(var i=0;i<obj.length;i++)
+				{
+					var linkObjAray = obj[i]["links"];
+					url = "http://10.126.219.141:8084";
+					tempurl = "";
+					debugger;
+					for(var j=0;j<linkObjAray.length;j++)
+					{
+						var linkobj = linkObjAray[j];
+						if(linkobj["rel"] == "runningJobs")
+						{
+							tempurl = linkobj["href"];
+						}
+						if(tempurl != "")
+						{
+							url = url+tempurl;
+							 $.get(url, function(data, status){
+							 
+							 if(status == "success")
+							{
+								
+							}
+							 
+							 });
+							break;
+							
+						}
+						
+					}
+				}
+				
+		}
+		
+		});
+    },20000);
+}
+function showpopup(obj)
+{
+	 
+	window.open("./page2.html",'_blank');
+	
+	
+	
+}
+
+
+
+
+
+</script>
+</body>
+</html>
