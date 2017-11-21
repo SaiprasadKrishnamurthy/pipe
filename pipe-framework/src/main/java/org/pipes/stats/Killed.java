@@ -14,6 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Killed extends ResourceSupport implements Serializable {
+    private String txnId;
     private String pipelineId;
     private long timestamp;
 }

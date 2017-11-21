@@ -11,8 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by saipkri on 17/11/17.
@@ -47,7 +50,7 @@ public class StatsRepository {
     }
 
     public void saveKilled(final Killed killed) {
-        hashOps.put(KILLED, killed.getPipelineId(), killed);
+        hashOps.put(KILLED, killed.getTxnId(), killed);
     }
 
     public void saveJob(final Job job) {
@@ -76,6 +79,14 @@ public class StatsRepository {
 
     public Map<String, Killed> findAllKilled() {
         return hashOps.entries(KILLED);
+    }
+
+    public List<Killed> findAllKilledByPipelineId(final String pipelineId) {
+        Collection<Killed> values = hashOps.entries(KILLED).values();
+        return values
+                .stream()
+                .filter(o -> o.getPipelineId().equals(pipelineId))
+                .collect(toList());
     }
 
     public void deleteRunning(final String pipelineId) {

@@ -67,7 +67,7 @@ public class BatchResource {
             return new ResponseEntity<>(ImmutableMap.of("message", "No configuration found for id: " + pipelineId), HttpStatus.NOT_FOUND);
         }
         statsRepository.deleteRunning(pipelineId.trim());
-        statsRepository.saveKilled(new Killed(pipelineId, System.currentTimeMillis()));
+        statsRepository.saveKilled(new Killed(txnId, pipelineId, System.currentTimeMillis()));
         orchestration.kill(pipelineId, txnId);
         return new ResponseEntity<>(ImmutableMap.of("pipelineId", pipelineId, "status", "deleted"), HttpStatus.OK);
     }
@@ -81,9 +81,7 @@ public class BatchResource {
     @GetMapping("/job/recent-killed/{pipelineId}")
     @CrossOrigin(methods = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS, RequestMethod.GET})
     public ResponseEntity<Collection<Killed>> recentKilled(@PathVariable(name = "pipelineId") final String pipelineId) {
-        return new ResponseEntity<>(statsRepository.findAllKilled().values().stream()
-                .filter(killed -> killed.getPipelineId().equals(pipelineId.trim()))
-                .collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(statsRepository.findAllKilledByPipelineId(pipelineId.trim()), HttpStatus.OK);
     }
 
     @GetMapping("/job/running/{pipelineId}")
