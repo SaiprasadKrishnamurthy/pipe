@@ -64,7 +64,8 @@ public class BatchOrchestration implements Orchestration {
                 statsRepository.deleteRunning(pipelineId);
                 statsRepository.updateJob(msg.getTxnId());
             };
-            new EsBatchDataInput(processBatch, endBatch, elasticsearchTemplate, pipelineId, pipelineCache, txnId, applicationContext);
+            EsBatchDataInput esBatchDataInput = new EsBatchDataInput(processBatch, endBatch, elasticsearchTemplate, pipelineId, pipelineCache, txnId, applicationContext);
+            esBatchDataInput.killSignal(() -> statsRepository.isKilled(txnId.trim()));
         }
     }
 

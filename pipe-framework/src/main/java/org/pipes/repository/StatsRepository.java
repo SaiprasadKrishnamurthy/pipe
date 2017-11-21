@@ -89,6 +89,10 @@ public class StatsRepository {
                 .collect(toList());
     }
 
+    public boolean isKilled(final String txnId) {
+        return hashOps.entries(KILLED).containsKey(txnId.trim());
+    }
+
     public void deleteRunning(final String pipelineId) {
         hashOps.delete(RUNNING, pipelineId);
     }

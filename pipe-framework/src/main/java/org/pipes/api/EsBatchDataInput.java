@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.elasticsearch.index.query.QueryBuilders.wrapperQuery;
 
@@ -27,8 +28,8 @@ public class EsBatchDataInput implements BatchDataInput<Object> {
     private final String txnId;
     private final String pipelineId;
     private final PipelineCache pipelineCache;
+    private Supplier<Boolean> killSignalSupplier;
     private final ApplicationContext applicationContext;
-    private boolean killed;
     private static final int SCROLL_ALIVE_TIME_IN_MINUTES = 5 * 1000 * 60;
 
 
@@ -64,7 +65,7 @@ public class EsBatchDataInput implements BatchDataInput<Object> {
                     .withPageable(PageRequest.of(0, pipeConfig.getBatch().getElasticsearch().getBatchSize()))
                     .build();
             ScrolledPage<?> scrolledPage = (ScrolledPage<Object>) elasticsearchTemplate.startScroll(SCROLL_ALIVE_TIME_IN_MINUTES, searchQuery, Class.forName(pipeConfig.getBatch().getPojo()));
-            while (scrolledPage.hasContent() && !killed) {
+            while (scrolledPage.hasContent() && killSignalSupplier != null && !killSignalSupplier.get()) {
                 List<Object> content = new ArrayList<>(scrolledPage.getContent());
                 CompletableFuture.supplyAsync(() -> {
                     resultCallback.accept(content);
@@ -102,8 +103,8 @@ public class EsBatchDataInput implements BatchDataInput<Object> {
     }
 
     @Override
-    public void kill() {
-        this.killed = true;
+    public void killSignal(final Supplier<Boolean> killSignalSupplier) {
+        this.killSignalSupplier = killSignalSupplier;
     }
 
     @Override
