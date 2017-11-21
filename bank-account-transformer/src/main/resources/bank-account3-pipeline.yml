@@ -1,0 +1,21 @@
+namespace: "pipeline"
+pipelineId: "SamplePipeline4"
+author: "Rangana Herath"
+description: "Does something"
+realtime:
+    transformer: "passThroughTransformer"
+    index: "bank"
+    batchSize: 100
+    pojo: "com.sai.samples.bank.model.Account"
+    idField: "account_number"
+batch:
+    elasticsearch:
+        fromIndex: "bank"
+        fromType: "account"
+        batchSize: 100
+        query: "{  \"match_all\": {}  } "
+        toIndex: "bank_new"
+        toType: "account_new"
+        idField: "account_number"
+    transformer: "passThroughTransformer"
+    pojo: "com.sai.samples.bank.model.Account"
