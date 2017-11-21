@@ -1,7 +1,7 @@
 namespace: "pipeline"
-pipelineId: "SamplePipeline2"
-author: "Joe Blogg"
-description: "Does something"
+pipelineId: "SamplePipeline3"
+author: "Dave Matthews"
+description: "Does something cool"
 realtime:
     transformer: "passThroughTransformer"
     index: "bank"
