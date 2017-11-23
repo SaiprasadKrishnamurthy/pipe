@@ -9,6 +9,7 @@ import org.pipes.stats.Job;
 import org.pipes.stats.Killed;
 import org.pipes.stats.Log;
 import org.pipes.stats.Running;
+import org.pipes.util.TimeAggregateUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -95,9 +97,11 @@ public class BatchResource {
 
     @GetMapping("/job/{txnId}/docs-loaded-stats")
     @CrossOrigin(methods = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS, RequestMethod.GET})
-    public ResponseEntity<Collection<Log>> docsLoaded(@PathVariable("txnId") String pipelineId,
-                                                      @RequestParam(value = "topN", defaultValue = "50") long topN) {
-        return new ResponseEntity<>(statsRepository.logs(pipelineId.trim(), topN), HttpStatus.OK);
+    public ResponseEntity<Map<String, Long>> docsLoaded(@PathVariable("txnId") String pipelineId,
+                                                        @RequestParam(value = "topN", defaultValue = "50") long topN,
+                                                        @RequestParam(value = "timeUnit", defaultValue = "SECONDS") TimeUnit timeUnit) {
+        List<Log> logs = statsRepository.logs(pipelineId.trim(), topN);
+        return new ResponseEntity<>(TimeAggregateUtil.aggregate(logs, timeUnit), HttpStatus.OK);
     }
 
     @GetMapping("/jobs")
