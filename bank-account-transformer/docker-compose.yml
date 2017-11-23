@@ -17,19 +17,17 @@ services:
       image: pipe/bank-account-transformer
       depends_on:
         - redis
-        - rabbit1
-  rabbit1:
+        - rabbit
+  rabbit:
       image: "rabbitmq:3"
-      hostname: "rabbit1"
+      hostname: "rabbit"
       environment:
         RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-        RABBITMQ_DEFAULT_USER: "guest"
-        RABBITMQ_DEFAULT_PASS: "guest"
+        RABBITMQ_DEFAULT_USER: "admin"
+        RABBITMQ_DEFAULT_PASS: "secret"
         RABBITMQ_DEFAULT_VHOST: "/"
       ports:
         - "15673:15672"
         - "5673:5672"
-      labels:
-        NAME: "rabbit1"
 volumes:
   redisdata: {}
