@@ -22,6 +22,8 @@ public final class TimeAggregateUtil {
                     String key;
                     if (timeUnit == TimeUnit.SECONDS) {
                         key = secondKey(new DateTime(m.getTimestamp()));
+                    } else if (timeUnit == TimeUnit.MILLISECONDS) {
+                        key = millisecondKey(new DateTime(m.getTimestamp()));
                     } else if (timeUnit == TimeUnit.MINUTES) {
                         key = minuteKey(new DateTime(m.getTimestamp()));
                     } else if (timeUnit == TimeUnit.HOURS) {
@@ -37,6 +39,10 @@ public final class TimeAggregateUtil {
 
     private static String secondKey(final DateTime dateTime) {
         return dateTime.getDayOfMonth() + "/" + dateTime.getMonthOfYear() + "/" + dateTime.getYear() + " " + dateTime.getHourOfDay() + ":" + dateTime.getMinuteOfHour() + ":" + dateTime.getSecondOfMinute();
+    }
+
+    private static String millisecondKey(final DateTime dateTime) {
+        return dateTime.getDayOfMonth() + "/" + dateTime.getMonthOfYear() + "/" + dateTime.getYear() + " " + dateTime.getHourOfDay() + ":" + dateTime.getMinuteOfHour() + ":" + dateTime.getSecondOfMinute() + ":" + dateTime.millisOfSecond();
     }
 
     private static String minuteKey(final DateTime dateTime) {
