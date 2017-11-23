@@ -29,7 +29,7 @@ public final class TimeAggregateUtil {
                     } else {
                         throw new IllegalArgumentException("Timeunit not supported: " + timeUnit);
                     }
-                    aggs.compute(key, (k, v) -> v == null ? 0 : v + m.getCount());
+                    aggs.compute(key, (k, v) -> v == null ? m.getCount() : v + m.getCount());
 
                 });
         return aggs;
