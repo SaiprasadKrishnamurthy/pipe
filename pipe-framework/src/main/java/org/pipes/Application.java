@@ -39,6 +39,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -90,6 +91,9 @@ public class Application {
 
     @Value("${spring.redis.port}")
     private int redisPort;
+
+    @Autowired
+    private Environment environment;
 
     @Bean
     RabbitAdmin rabbitAdmin() {
@@ -190,7 +194,11 @@ public class Application {
         return (args) -> {
             System.out.println(" *********************** LOADED INIT DATA *********************** ");
             System.out.println(" *********************** APP IS NOW RUNNING *********************** " + port);
-            System.out.println("Sending message...");
+            System.out.println(" *********************** PORT *********************** " + environment.getProperty("local.server.port"));
+            ;
+            System.out.println("Rabbit Host... \n\n " + connectionFactory.getHost());
+            System.out.println("Rabbit Port... \n\n " + connectionFactory.getPort());
+            System.out.println("Rabbit Username... \n\n " + connectionFactory.getUsername());
 
             // cache warm up
             System.out.println(pipelineCache.getPipes());
