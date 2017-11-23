@@ -133,7 +133,7 @@
                             <configuration>
                                 <target if="debug">
                                     <java fork="true" failonerror="yes"
-                                          jar="${project.build.directory}/${build.finalName}.jar">
+                                          jar="${project.build.directory}/${project.build.finalName}.jar">
                                         <jvmarg value="-Xdebug"/>
                                         <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"/>
                                     </java>
@@ -149,7 +149,7 @@
                             <configuration>
                                 <target if="run">
                                     <java fork="true" failonerror="yes"
-                                          jar="${project.build.directory}/${build.finalName}.jar">
+                                          jar="${project.build.directory}/${project.build.finalName}.jar">
                                     </java>
                                 </target>
                             </configuration>
