@@ -165,7 +165,7 @@ public class BatchResource {
         out.append(" --> ");
         out.append("*").append(pipeConfig.getRealtime().getTransformer()).append("\n");
         out.append("*").append(pipeConfig.getRealtime().getTransformer());
-        out.append(" -- ").append("Bulk size ").append(pipeConfig.getRealtime().getBatchSize()).append(" index ").append(" --> ").append(pipeConfig.getRealtime().getIndex()).append("*Elasticsearch*\n");
+        out.append(" -- ").append("Bulk size ").append(pipeConfig.getRealtime().getBatchSize()).append(" index ").append(pipeConfig.getRealtime().getIndex()).append(" --> ").append("*Elasticsearch*\n");
 
         out.append("Elasticsearch -- ").append("Bulk read size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getBatch().getElasticsearch().getFromIndex()).append("POJO__Binder\n");
         out.append("POJO__Binder -- ").append(pipeConfig.getBatch().getPojo()).append(" --> ").append("*" + pipeConfig.getBatch().getTransformer()).append("\n");
