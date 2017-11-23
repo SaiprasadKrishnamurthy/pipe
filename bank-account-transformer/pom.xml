@@ -20,7 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <framework.version>1.0.0-SNAPSHOT</framework.version>
-        <docker.image.prefix>idc</docker.image.prefix>
+        <docker.image.prefix>pipe</docker.image.prefix>
         <docker.plugin.version>0.3.258</docker.plugin.version>
     </properties>
     <dependencies>

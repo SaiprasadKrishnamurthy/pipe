@@ -1,34 +1,5 @@
-version: '2'
+  version: '2'
 services:
-  elasticsearch1:
-      image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
-      container_name: es1
-      environment:
-        - cluster.name=idc-cluster
-        - bootstrap.memory_lock=true
-        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-        - xpack.security.enabled=false
-      ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-      mem_limit: 1g
-      volumes:
-        - esdata1:/usr/share/elasticsearch/data
-      ports:
-        - 9201:9200
-      networks:
-        - docker-elk
-  idcdb:
-    image: postgres:9.6
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=DriveMe
-      - POSTGRES_USER=idc
-      - POSTGRES_DB=idc
-    volumes:
-      - pgdata:/var/lib/db
   idcredis:
     image: redis:4.0
     environment:
@@ -37,47 +8,14 @@ services:
       - '6379:6379'
     volumes:
       - redisdata:/var/lib/redis
-  booking-service:
+  banking-service:
       environment:
        - PORT=8085
-       - PROFILE=integration
+       - PROFILE=cloud
       ports:
        - 8085:8085
-      image: idc/idc-booking-service
+      image: pipe/bank-account-transformer
       depends_on:
-        - idcdb
         - idcredis
-  notification-service:
-        environment:
-         - PORT=8087
-         - PROFILE=integration
-        ports:
-         - 8087:8087
-        image: idc/idc-notification-service
-        depends_on:
-          - idcredis
-  analytics-service:
-        environment:
-         - PORT=8088
-         - PROFILE=integration
-        ports:
-         - 8088:8088
-        image: idc/idc-analytics-service
-        depends_on:
-          - idcredis
-          - elasticsearch1
-  kibana:
-    image: docker.elastic.co/kibana/kibana:5.6.3
-    environment:
-          - "ELASTICSEARCH_URL=http://elasticsearch1:9200"
-    networks:
-          - docker-elk
 volumes:
-  pgdata: {}
   redisdata: {}
-  esdata1:
-    driver: local
-
-networks:
-    docker-elk:
-      driver: bridge
