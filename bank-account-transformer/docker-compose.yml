@@ -17,7 +17,7 @@ services:
       image: pipe/bank-account-transformer
       depends_on:
         - idcredis
-        - rabbitmq1
+        - rabbit1
   rabbit1:
       image: "rabbitmq:3"
       hostname: "rabbit1"
