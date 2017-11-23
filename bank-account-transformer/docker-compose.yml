@@ -1,4 +1,4 @@
-  version: '2'
+version: '2'
 services:
   idcredis:
     image: redis:4.0
