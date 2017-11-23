@@ -1,6 +1,8 @@
 package org.pipes.api;
 
 import org.pipes.service.PipelineCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -22,13 +24,16 @@ import static org.elasticsearch.index.query.QueryBuilders.wrapperQuery;
  */
 public class EsBatchDataInput implements BatchDataInput<Object> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EsBatchDataInput.class);
+
+
     private final Consumer<List<Object>> resultCallback;
     private final Consumer<Message> endCallback;
     private final ElasticsearchTemplate elasticsearchTemplate;
     private final String txnId;
     private final String pipelineId;
     private final PipelineCache pipelineCache;
-    private Supplier<Boolean> killSignalSupplier;
+    private final Supplier<Boolean> killSignalSupplier;
     private final ApplicationContext applicationContext;
     private static final int SCROLL_ALIVE_TIME_IN_MINUTES = 5 * 1000 * 60;
 
@@ -37,7 +42,8 @@ public class EsBatchDataInput implements BatchDataInput<Object> {
                             final ElasticsearchTemplate elasticsearchTemplate,
                             final String pipelineId, final PipelineCache pipelineCache,
                             final String txnId,
-                            final ApplicationContext applicationContext) {
+                            final ApplicationContext applicationContext,
+                            final Supplier<Boolean> killSignalSupplier) {
         this.resultCallback = resultCallback;
         this.endCallback = endCallback;
         this.elasticsearchTemplate = elasticsearchTemplate;
@@ -45,6 +51,7 @@ public class EsBatchDataInput implements BatchDataInput<Object> {
         this.pipelineCache = pipelineCache;
         this.txnId = txnId;
         this.applicationContext = applicationContext;
+        this.killSignalSupplier = killSignalSupplier;
         emit();
     }
 
@@ -100,11 +107,6 @@ public class EsBatchDataInput implements BatchDataInput<Object> {
     @Override
     public void jdbcTemplate(final JdbcTemplate jdbcTemplate) {
         // Who cares..
-    }
-
-    @Override
-    public void killSignal(final Supplier<Boolean> killSignalSupplier) {
-        this.killSignalSupplier = killSignalSupplier;
     }
 
     @Override
