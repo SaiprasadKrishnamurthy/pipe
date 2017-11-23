@@ -5,7 +5,7 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
-      - '6379:6379'
+      - '6380:6379'
     volumes:
       - redisdata:/var/lib/redis
   banking-service:
@@ -13,7 +13,7 @@ services:
        - PORT=8085
        - PROFILE=cloud
       ports:
-       - 8085:8085
+       - 8086:8085
       image: pipe/bank-account-transformer
       depends_on:
         - idcredis
