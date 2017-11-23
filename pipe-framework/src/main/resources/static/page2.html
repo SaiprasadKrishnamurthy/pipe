@@ -1,2 +1,155 @@
-<html>
-Page2</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pipe</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/mermaid.css" rel="stylesheet">
+</head>
+
+
+<style>
+.section-light
+{
+	     background: none;
+}
+
+a:hover
+{
+	 text-decoration: none;
+}
+
+a
+{
+	color: #367e9c;
+    text-decoration: none;
+    cursor: pointer;
+    outline: 0;
+	margin-bottom: 2px;
+    display: inline-block;
+    font-family: BentonSans-Book, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+
+
+.list-feature span
+{
+	font-size:100%;
+}
+
+
+.fa-6
+{
+	font-size:17px;
+}
+
+
+.navbar
+{
+	width:100%;
+	color: #FFFFFF;
+    line-height: 4rem;
+    font-size: 1.6rem;
+    background-color: #464646;
+
+}
+
+
+.navbar a {
+    color: white !important;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    padding-bottom: 24px !important;
+    padding-top: 20px !important;
+}
+
+img:hover
+{
+	cursor:pointer;
+}
+
+
+.btn-primary {
+   border:none;
+}
+
+.btn-primary:hover {
+   border:none;
+}
+
+.popoverText
+{
+	    color: #6767ea;
+}
+
+
+
+
+
+</style>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed" role="navigation">
+    <div class="container" style="width:100%">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Pipe</a>
+        </div>
+        <div class="collapse navbar-collapse">
+
+        </div><!--/.nav-collapse -->
+
+    </div>
+
+
+</div>
+
+
+<section class="section-light">
+    <div class="page-header">
+        <h1>Pipeline: SamplePipeline1</h1>
+    </div>
+    <div id="contentLoad" class="col-md-11" style="margin-top: 5%;overflow-y:auto;margin-left:5%">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Flow</div>
+            <div class="panel-body">
+                <div class="mermaid">
+                    graph LR
+                    1.Real_Time_RestAPI -- Raw Payload --> 1.POJO_Binder
+                    1.POJO_Binder -- com.sai.samples.bank.model.Account --> 1.passThroughTransformer
+                    1.passThroughTransformer -- Bulk write size 100 index 'bank' --> Write_Elasticsearch
+                    Read_Elasticsearch -- Bulk read size 100 index 'bank' -->2.POJO_Binder
+                    2.POJO_Binder -- com.sai.samples.bank.model.Account --> 2.passThroughTransformer
+                    2.passThroughTransformer -- Bulk write size 100 index 'bank_new' --> Write_Elasticsearch
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--  core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/mermaid.js"></script>
+
+<script>
+
+</script>
+</body>
+</html>
