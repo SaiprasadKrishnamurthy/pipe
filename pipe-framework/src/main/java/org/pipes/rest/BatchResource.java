@@ -15,6 +15,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -150,5 +151,26 @@ public class BatchResource {
     @CrossOrigin(methods = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS, RequestMethod.GET})
     public ResponseEntity<PipeConfig> pipeline(@PathVariable(name = "pipelineId") final String pipelineId) {
         return new ResponseEntity<>(pipelineCache.getPipeConfig(pipelineId).get(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/pipeline/{pipelineId}/flow", produces = MediaType.TEXT_PLAIN_VALUE)
+    @CrossOrigin(methods = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS, RequestMethod.GET})
+    public ResponseEntity<String> pipelineFlow(@PathVariable(name = "pipelineId") final String pipelineId) {
+        PipeConfig pipeConfig = pipelineCache.getPipeConfig(pipelineId).get();
+        StringBuilder out = new StringBuilder();
+        out.append("graph LR\n");
+        out.append("RestAPI -- Payload --> POJO_Binder\n");
+        out.append("POJO_Binder -- ");
+        out.append(pipeConfig.getRealtime().getPojo());
+        out.append(" --> ");
+        out.append("*").append(pipeConfig.getRealtime().getTransformer()).append("\n");
+        out.append("*").append(pipeConfig.getRealtime().getTransformer());
+        out.append(" -- ").append("Bulk size ").append(pipeConfig.getRealtime().getBatchSize()).append(" index ").append(pipeConfig.getRealtime().getIndex()).append("*Elasticsearch*\n");
+
+        out.append("Elasticsearch -- ").append("Bulk read size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getBatch().getElasticsearch().getFromIndex()).append("POJO__Binder\n");
+        out.append("POJO__Binder -- ").append(pipeConfig.getBatch().getPojo()).append(" --> ").append("*" + pipeConfig.getBatch().getTransformer()).append("\n");
+        out.append("*" + pipeConfig.getBatch().getTransformer()).append(" -- ").append("Bulk size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getRealtime().getIndex()).append("*Elasticsearch*\n");
+
+        return new ResponseEntity<>(out.toString(), HttpStatus.OK);
     }
 }
