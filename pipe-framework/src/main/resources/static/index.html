@@ -4,17 +4,71 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pipe</title>
+    <title>RAAS | Test Harness</title>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="css/font-awesome.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/main.css" rel="stylesheet">
-    <link href="css/mermaid.css" rel="stylesheet">
+	<link href="css/mermaid.css" rel="stylesheet">
+	<link href="css/default_template_en.css" rel="stylesheet">
+	
+	
+	
+	
+	<script src="js/mermaid.js"></script>
+	<script src="js/charts.js"></script>
+	<script src="js/d3.min.js"></script>
 </head>
 
 
+    
+    
+    
+	
 <style>
+
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #121401;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+    stroke-linecap: round;
+}
+.filterable {
+    margin-top: 15px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+
+
+
+
+
+
+
+
+
 .section-light
 {
 	     background: none; 
@@ -90,6 +144,34 @@ img:hover
 }
 
 
+.panelSpan
+{
+	color: #424294;
+    font-size: 17px;
+    font-family: serif;
+	margin-bottom:10px;
+	margin-right:100px;
+}
+
+.panelContant
+{
+	color: black;
+    font-size: 15px;
+    font-family: serif;
+	margin-left:20px;
+}
+
+.well .label
+{
+	color:black;
+}
+
+.panel-title
+{
+	padding:10px;
+}
+
+
 
 
 
@@ -106,44 +188,138 @@ img:hover
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Pipe</a>
+	<button type="button" class="btn btn-default navbar-btn pull-left" style="margin-right:9px;display:none">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </button>
+            <a class="navbar-brand" href="#" style="margin-top:-4px;">Pipe</a>
         </div>
         <div class="collapse navbar-collapse">
 
+	
         </div><!--/.nav-collapse -->
-
+		
     </div>
-
-
+	
+	
 </div>
 
 
 <section class="section-light">
-    <div class="page-header">
+   
+	<div class="page-header">
         <h1>Available Pipe configs</h1>
     </div>
-    <div id="contentLoad" class="col-md-11" style="margin-top: 5%;overflow-y:auto;margin-left:5%">
-    </div>
-
-    <div class="modal fade" id="modalpopup">
-        <div class="modal-dialog" role="document" style="width:90%;overflow:auto">
-            <div class="modal-content" style="width:90%;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pouptitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+	
+	<div id="flowId" style="max-width:1000px!important;display:none;" class="well"></div>
+	
+	
+	
+	
+	
+	 <div class="col-md-12">
+            <div class="panel with-nav-tabs panel-primary" style="display:none">
+                <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1primary" data-toggle="tab" id="tab1Title"></a></li>
+                            <li><a href="#tab2primary" data-toggle="tab">Jobs</a></li>
+                           
+                        </ul>
                 </div>
-                <div class="modal-body">
-                    <img src="" id="poupimg" style="height:700px;margin-left:7%"></img>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab1Content">
+						<div class="row">
+						<div class="col-md-6">
+						<span class="panelSpan">NameSpace</span>
+						<span>:</span>
+						<span class="panelContant" id="nameSpaceContent"></span>
+						
+						</div>
+						
+						<div class="col-md-6">
+						<span class="panelSpan">Description</span>
+						<span>:</span>
+						<span class="panelContant" id="descriptionContent"></span>
+						
+						</div>
+						
+						
+						</div>
+						<div class="row" style="margin-top:25px;">
+						<div class="col-md-6">
+						<span class="panelSpan">Author</span>
+						<span style="margin-left:32px">:</span>
+						<span class="panelContant" id="authorContent"></span>
+						
+						</div>
+						</div>
+						</div>
+                        <div class="tab-pane" id="tab2Content">
+						<div class="col-md-11" id="noDataFound"></div>
+						<div class="col-md-11" id="jobTableMainDiv" style="margin-left:4%;">
+							<div class="row">
+								 <div class="panel panel-primary filterable">
+									 <div class="panel-heading">
+									 <h3 class="panel-title">JOBS</h3>
+										 <div class="pull-right">
+											
+										 </div>
+									 </div>
+									 <table class="table">
+										 <thead>
+											 <tr class="filters">
+												 <th><input type="text" class="form-control" placeholder="#" disabled></th>
+												 <th><input type="text" class="form-control" placeholder="Transcation ID" disabled></th>
+												 <th><input type="text" class="form-control" placeholder="Start Time" disabled></th>
+												 <th><input type="text" class="form-control" placeholder="End Time" disabled></th>
+												 <th>Charts</th>
+											 </tr>
+										 </thead>
+										<tbody id="tableContent">
+										</tbody>
+									</table>
+									
+								</div>
+							</div>
+						</div>
+						
+						</div>
+                        
+                    </div>
                 </div>
             </div>
         </div>
+	
+	<div id="contentLoad" class="col-md-11" style="margin-top: 5%;overflow-y:auto;margin-left:5%">
+	</div>
+	
+	
+
+	<div class="modal fade" id="modalpopup">
+  <div class="modal-dialog"  role="document" style="width:90%;overflow:auto">
+    <div class="modal-content" style="width:90%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pouptitle"> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	  
+	  <div id="nodatafounddiv"><div class="alert alert-info" role="alert">  <a href="#" class="alert-link">NO DATA FOUND</a></div></div>
+	  <div id="loadingdiv"><div class="alert alert-info" role="alert">  <a href="#" class="alert-link">Loading .. </a></div></div>
+       <div id="lineChartContent_chart" style="text-align:center"></div>
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
 </section>
+
+
 
 
 <!--  core JavaScript
@@ -151,12 +327,45 @@ img:hover
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/mermaid.js"></script>
+
 
 <script>
 $( document ).ready(function() {
-$('[data-toggle="popover"]').popover();   
-   $.get("http://10.126.219.141:8084/v1/pipelines", function(data, status){
+
+callRest();
+
+	
+	
+	
+
+   
+	
+});
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  var target = $(e.target).attr("href") // activated tab
+  if(target=="#tab1primary")
+  {
+	$("#tab1Content")[0].style.display="block";
+	$("#tab2Content")[0].style.display="none";
+  }else
+  {
+	$("#tab1Content")[0].style.display="none";
+	$("#tab2Content")[0].style.display="block";
+  }
+  
+});
+
+$(document).click(function (e) {
+if(e.target.className != "glyphicon glyphicon-info-sign")
+setTimeout(function(){ $('.popverElement').popover('hide'); }, 10);
+
+});
+
+function callRest()
+{
+	$('[data-toggle="popover"]').popover();   
+   $.get("/v1/pipelines", function(data, status){
         
 		if(status == "success")
 		{
@@ -194,22 +403,11 @@ $('[data-toggle="popover"]').popover();
 		}
     });
 	
-	
-	
-	
-});
-
-$(document).click(function (e) {
-if(e.target.className != "glyphicon glyphicon-info-sign")
-setTimeout(function(){ $('.popverElement').popover('hide'); }, 10);
-
-});
-
-
+}
 function drawContnet(obj)
 {
 	$('#modalpopup').modal({ show: false})
-	
+	$(".pull-left")[0].style.display="none";
 	
 	var content = obj;
 	window.content = content;
@@ -230,7 +428,7 @@ function drawContnet(obj)
 			}
 			
 			thumbmail = '<div class="col-md-3" style="padding:20px"><div style="text-align:center;border: 2px solid #e2e0e9;height: 260px;width: 273px">'
-			thumbmail+=	 '<img src="/images/lambda.png" objid='+i
+			thumbmail+=	 '<img src="images/lambda.png" objid='+i
 			+' onclick="showpopup(this)" data-target="#modalpopup" style="box-shadow: 5px 6px 8px #888888;margin-top:23px;height:183px;width:219px;border: 2px solid #e0dada;"></img><br>'
 			thumbmail+=  '<div style="margin-top:10px;margin-top: 10px;font-size: 15px;color: #323359;font-weight: bold;">'+content[i]['pipelineId']+' &nbsp;<a href="#" class="popverElement" data-toggle="popover" id="popover'+i+'" attrindex='+i+' title='+content[i]['pipelineId']+'><span class="glyphicon glyphicon-info-sign"></span></a> </div></div></div>'
 			$("#"+rowid).html($("#"+rowid).html()+thumbmail);
@@ -243,21 +441,23 @@ function drawContnet(obj)
 	}
 	
 	
-	setInterval(function () {
-        $.get("http://10.126.219.141:8084/v1/pipelines", function(data, status){
+	/*setInterval(function () {
+    
+
+    $.get("/v1/pipelines", function(data, status){
         
 		if(status == "success")
 		{
 				var obj =data;
-				var url = "http://10.126.219.141:8084";
+				var url = "";
 				var tempurl = "";
 				
 				for(var i=0;i<obj.length;i++)
 				{
 					var linkObjAray = obj[i]["links"];
-					url = "http://10.126.219.141:8084";
+					url = "";
 					tempurl = "";
-					debugger;
+				
 					for(var j=0;j<linkObjAray.length;j++)
 					{
 						var linkobj = linkObjAray[j];
@@ -286,21 +486,190 @@ function drawContnet(obj)
 		}
 		
 		});
-    },20000);
+    },20000);*/
 }
 function showpopup(obj)
 {
+	 var index = obj.attributes["objid"].value;
+	
+	 var selectedObj = window.content[index];
+	$("#contentLoad")[0].innerHTML = "";
+	$("#contentLoad")[0].style.marginTop=0
+	$("#tab1Title")[0].innerHTML = selectedObj["pipelineId"];
+	$("#nameSpaceContent")[0].innerHTML = selectedObj["namespace"];
+	$("#descriptionContent")[0].innerHTML = selectedObj["description"];
+	$("#authorContent")[0].innerHTML = selectedObj["author"];
+	$(".panel-primary")[0].style.display="block";
+	
+	
+	
+	var htmlString = "";
+	
+	drawFlowChart(selectedObj["pipelineId"]);
+	
+		
+		
+	$.get("/v1/jobs/"+selectedObj["pipelineId"], function(data, status){
+        
+		if(status == "success")
+		{
+			var data = data;
+			
+			if(data.length>0)
+			{
+				var tableString = "";
+				$("#jobTableMainDiv")[0].style.display="block";
+				$("#noDataFound")[0].style.display="none";
+				 for(var i=0;i<data.length;i++)
+				 {
+					 tableString    += '<tr>'
+					 tableString    += '<td>'+i+1+'</td>'
+					 tableString    += '<td>'+data[i]["txnId"]+'</td>'
+					 tableString    += '<td>'+(data[i]["started"]==0?0:new Date(data[i]["started"]).toLocaleString())+'</td>'
+					 tableString    += '<td>'+(data[i]["ended"]==0?0:new Date(data[i]["ended"]).toLocaleString())+'</td>'
+					 tableString    += '<td><button type="button" class="btn btn-default" onclick="drawLineChart(this)"> <span class="fa fa-line-chart"></span> Charts </button></td>'
+					 tableString    += '</tr>'
+				 }
+				 $("#tableContent")[0].innerHTML = tableString;
+				 $(".pull-right")[0].innerHTML = '<button class="btn btn-default btn-xs btn-filter" style="margin-top:-27px"><span class="glyphicon glyphicon-filter"></span> Filter</button>';
+				 
+				
+				
+				
+				
+				$('.filterable .btn-filter').click(function(){
+				
+						var $panel = $(this).parents('.filterable'),
+						$filters = $panel.find('.filters input'),
+						$tbody = $panel.find('.table tbody');
+						if ($filters.prop('disabled') == true) {
+							$filters.prop('disabled', false);
+							$filters.first().focus();
+						} else {
+							$filters.val('').prop('disabled', true);
+							$tbody.find('.no-result').remove();
+							$tbody.find('tr').show();
+						}
+				});
+
+			$('.filterable .filters input').keyup(function(e){
+				/* Ignore tab key */
+				var code = e.keyCode || e.which;
+				if (code == '9') return;
+				/* Useful DOM data and selectors */
+				var $input = $(this),
+				inputContent = $input.val().toLowerCase(),
+				$panel = $input.parents('.filterable'),
+				column = $panel.find('.filters th').index($input.parents('th')),
+				$table = $panel.find('.table'),
+				$rows = $table.find('tbody tr');
+				/* Dirtiest filter function ever ;) */
+				var $filteredRows = $rows.filter(function(){
+					var value = $(this).find('td').eq(column).text();
+					return value.indexOf(inputContent) === -1;
+				});
+				/* Clean previous no-result if exist */
+				$table.find('tbody .no-result').remove();
+				/* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+				$rows.show();
+				$filteredRows.hide();
+				/* Prepend no-result row if all rows are filtered */
+				if ($filteredRows.length === $rows.length) {
+					$table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="'+ $table.find('.filters th').length +'">No result found</td></tr>'));
+				}
+				});
+			}else
+			{
+				$("#jobTableMainDiv")[0].style.display="none";
+				$("#noDataFound")[0].style.display="block";
+				$("#noDataFound")[0].innerHTML = $("#contentLoad")[0].innerHTML+'<div class="alert alert-info" role="alert">  <a href="#" class="alert-link">NO DATA FOUND</a></div>'
+			}
+		
+			
+		}
+		
+	});
+		
+	
+	$("#contentLoad")[0].innerHTML = htmlString ;
+	$(".pull-left")[0].style.display="block";
+	$(".page-header")[0].style.display="none";
+	
+	
 	 
-	window.open("./page2.html",'_blank');
-	
-	
+
 	
 }
 
 
+$(".pull-left").click(function(){
+$(".page-header")[0].style.display="block";
+$(".panel-primary")[0].style.display="none";
+$("#flowId")[0].style.display="none"
+callRest();
+});
 
+function drawLineChart(obj)
+{
+	$('#modalpopup').modal('show');
+	$("#pouptitle")[0].innerHTML =$("#tab1Title")[0].innerHTML;
+	$("#lineChartContent_chart")[0].innerHTML = "";
+	$("#nodatafounddiv")[0].style.display="none";
+	$("#loadingdiv")[0].style.display="block";
+	var transcationId = obj.parentElement.parentElement.childNodes[1].innerText;
+	var popupTitle = $("#tab1Title")[0].innerHTML;
+	var url = "/v1/job/"+transcationId+"/docs-loaded-stats/"
+	   $.get(url, function(data, status){
+        
+		if(status == "success")
+		{
+			var finaldata = [];
+			for(var prop in data)
+			{
+				var obj = {};
+				obj["x"] = prop;
+				obj["y"] = data[prop];
+				finaldata.push(obj);
+			}
+			console.log(finaldata);
+			if(finaldata.length >0)
+			{
+				var charobj = {};
+				charobj["seriesName"] = transcationId;
+				charobj["seriesData"] = finaldata;
+				drawLine("chart",{data:[charobj],"xaxisFixedDataPoints":null,"yaxisLabel":transcationId},$("#tab1Title")[0].innerHTML +" ( "+transcationId+" )")
+				setTimeout(function() {
+				$("#loadingdiv")[0].style.display="none";
+				},5000);
+			}else
+			{
+				$("#nodatafounddiv")[0].style.display="block";
+				$("#loadingdiv")[0].style.display="none";
+			}
+		}
+		
+	});
+}
 
+function drawFlowChart(id)
+{
 
+	 $.get("/v1/pipeline/"+id+"/flow", function(data, status){
+		if(status == "success")
+		{
+			var flow = data;
+			$("#flowId")[0].innerHTML = "";
+			setTimeout(function() {
+                    mermaidAPI.render("flowId", flow.trim(), function(code, fns){document.getElementById("flowId").innerHTML=code});
+					$("#flowId")[0].style.display="block";
+					$("#flowId")[0].style.marginLeft = "20px";
+                }, 1);
+		
+		}
+		});
+}
+	
+	
 </script>
 </body>
 </html>
