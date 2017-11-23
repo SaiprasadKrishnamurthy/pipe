@@ -42,7 +42,7 @@ public final class TimeAggregateUtil {
     }
 
     private static String millisecondKey(final DateTime dateTime) {
-        return dateTime.getDayOfMonth() + "/" + dateTime.getMonthOfYear() + "/" + dateTime.getYear() + " " + dateTime.getHourOfDay() + ":" + dateTime.getMinuteOfHour() + ":" + dateTime.getSecondOfMinute() + ":" + dateTime.millisOfSecond();
+        return dateTime.getDayOfMonth() + "/" + dateTime.getMonthOfYear() + "/" + dateTime.getYear() + " " + dateTime.getHourOfDay() + ":" + dateTime.getMinuteOfHour() + ":" + dateTime.getSecondOfMinute() + ":" + dateTime.getMillisOfSecond();
     }
 
     private static String minuteKey(final DateTime dateTime) {
