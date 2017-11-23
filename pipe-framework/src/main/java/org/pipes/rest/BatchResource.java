@@ -163,13 +163,13 @@ public class BatchResource {
         out.append("POJO_Binder -- ");
         out.append(pipeConfig.getRealtime().getPojo());
         out.append(" --> ");
-        out.append("*").append(pipeConfig.getRealtime().getTransformer()).append("\n");
-        out.append("*").append(pipeConfig.getRealtime().getTransformer());
+        out.append(pipeConfig.getRealtime().getTransformer()).append("\n");
+        out.append(pipeConfig.getRealtime().getTransformer());
         out.append(" -- ").append("Bulk size ").append(pipeConfig.getRealtime().getBatchSize()).append(" index ").append(pipeConfig.getRealtime().getIndex()).append(" --> ").append("*Elasticsearch*\n");
 
-        out.append("Elasticsearch -- ").append("Bulk read size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getBatch().getElasticsearch().getFromIndex()).append("POJO__Binder\n");
+        out.append("Elasticsearch -- ").append("Bulk read size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getBatch().getElasticsearch().getFromIndex()).append(" --> ").append("POJO__Binder\n");
         out.append("POJO__Binder -- ").append(pipeConfig.getBatch().getPojo()).append(" --> ").append("*" + pipeConfig.getBatch().getTransformer()).append("\n");
-        out.append("*" + pipeConfig.getBatch().getTransformer()).append(" -- ").append("Bulk size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getRealtime().getIndex()).append(" --> ").append("*Elasticsearch*\n");
+        out.append(pipeConfig.getBatch().getTransformer()).append(" -- ").append("Bulk size ").append(pipeConfig.getBatch().getElasticsearch().getBatchSize()).append(" index ").append(pipeConfig.getBatch().getElasticsearch().getToIndex()).append(" --> ").append("*Elasticsearch*\n");
 
         return new ResponseEntity<>(out.toString(), HttpStatus.OK);
     }
